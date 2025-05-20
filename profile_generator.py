@@ -16,10 +16,10 @@ client = OpenAI(api_key=api_key)
 
 class ProfileGenerator:
     def __init__(self):
-        self.system_prompt = """You are a world-class expert in leadership psychology, organizational behavior, and executive development. You specialize in synthesizing diverse data sources—such as personality assessments, 360 feedback, coaching notes, performance reviews, and CVs—into insightful, psychologically sophisticated leadership profiles. Your goal is to produce actionable insights, grounded in evidence, that support individual growth and organizational fit. Always cite the data source behind your claims and remain both rigorous and humanistic in tone."""
+        self.system_prompt = """You are a world-class expert in psychology, psychological assessment, and personal development. You specialize in synthesizing diverse data sources—such as personality assessments, 360 feedback, coaching notes, performance reviews, and CVs—into insightful, psychologically sophisticated profiles. Your goal is to produce actionable insights, grounded in evidence, that support individual growth and organizational fit. Always cite the data source behind your claims and remain both rigorous and humanistic in tone."""
 
     def generate_profile(self, document_chunks: List[str], metadata: List[dict] = None) -> str:
-        """Generate a leadership profile from document chunks and optional metadata, returning structured JSON output."""
+        """Generate a psychology profile from document chunks and optional metadata, returning structured JSON output."""
         # Build the document type list for the LLM prompt and for the report
         doc_types = list(dict.fromkeys(meta['file_type'] for meta in metadata)) if metadata else []
         doc_type_list = "\n".join(f"- {doc_type}" for doc_type in doc_types)
@@ -135,21 +135,21 @@ class ProfileGenerator:
 
         prompt = (
             doc_summary_prompt +
-            f"Based on the following leadership documents, generate a comprehensive leadership profile:\n\n"
+            f"Based on the following psychology documents, generate a comprehensive psychology profile:\n\n"
             f"Person Information:\n{metadata_text}\n\n"
             "IMPORTANT FORMATTING INSTRUCTIONS:\n"
             "- For 'Key Strengths', 'Potential Derailers', 'Roles That Would Fit', and 'Roles That Would Not Fit' sections, ALWAYS format the content as a numbered list (1., 2., 3., etc.)\n"
             "- Insert a blank line between each numbered item (double line break)\n"
             "- Each point should be focused on a single strength, derailer, or role fit\n"
             "- Limit each enumerated list to a maximum of 5 items\n"
-            "- For 'Profile Summary' and 'Leadership Style' sections, use paragraph format\n"
+            "- For 'Profile Summary' and 'Psychological Style' sections, use paragraph format\n"
             "- Each significant claim should include a parenthetical reference to the source (e.g., 'strong analytical abilities (Hogan Assessment)')\n"
             "- Do not use markdown formatting or special characters that might interfere with JSON\n\n"
             "Sections:\n"
             "1. Profile Summary\n"
             "2. Key Strengths\n"
             "3. Potential Derailers\n"
-            "4. Leadership Style\n"
+            "4. Psychological Style\n"
             "5. Roles That Would Fit\n"
             "6. Roles That Would Not Fit\n\n"
             "Example output:\n"
@@ -157,7 +157,7 @@ class ProfileGenerator:
             "  {\"section\": \"Profile Summary\", \"content\": \"Jane Doe is a strategic leader with exceptional analytical abilities (Hogan Assessment) and extensive experience in technology transformation (CV/Resume)...\", \"sources\": \"Hogan Assessment, CV/Resume\"},\n"
             "  {\"section\": \"Key Strengths\", \"content\": \"1. Strong analytical thinking and problem-solving skills (Hogan Assessment)\\n\\n2. Excellent communication and stakeholder management (360° Feedback)\\n\\n3. Resilient under pressure (IDI Assessment)\", \"sources\": \"Hogan Assessment, 360° Feedback, IDI Assessment\"},\n"
             "  {\"section\": \"Potential Derailers\", \"content\": \"1. Can become overly focused on details (Hogan Assessment)\\n\\n2. May struggle with delegating effectively (360° Feedback)\\n\\n3. Sometimes avoids necessary conflict (Hogan Assessment)\", \"sources\": \"Hogan Assessment, 360° Feedback\"},\n"
-            "  {\"section\": \"Leadership Style\", \"content\": \"Jane demonstrates a collaborative, outcomes-focused leadership approach (360° Feedback) with a particular strength in complex stakeholder management (IDI Assessment)...\", \"sources\": \"360° Feedback, IDI Assessment\"},\n"
+            "  {\"section\": \"Psychological Style\", \"content\": \"Jane demonstrates a collaborative, outcomes-focused approach (360° Feedback) with a particular strength in complex stakeholder management (IDI Assessment)...\", \"sources\": \"360° Feedback, IDI Assessment\"},\n"
             "  {\"section\": \"Roles That Would Fit\", \"content\": \"1. Strategic leadership roles requiring analytical depth (Hogan Assessment)\\n\\n2. Cross-functional team leadership (CV/Resume)\\n\\n3. Change management initiatives (IDI Assessment)\", \"sources\": \"Hogan Assessment, CV/Resume, IDI Assessment\"},\n"
             "  {\"section\": \"Roles That Would Not Fit\", \"content\": \"1. Highly operational roles with repetitive tasks (Hogan Assessment)\\n\\n2. Positions requiring extensive detailed analysis (360° Feedback)\\n\\n3. Roles with limited stakeholder interaction (IDI Assessment)\", \"sources\": \"Hogan Assessment, 360° Feedback, IDI Assessment\"}\n"
             "]\n\n"
@@ -297,7 +297,7 @@ EXTREMELY IMPORTANT GUIDANCE ON SOURCES AND CITATIONS:
    {detected_doc_types}
 """
 
-        prompt = f"""Based on the following leadership documents, answer this special question:
+        prompt = f"""Based on the following psychology documents, answer this special question:
 
 {citation_guidance}
 

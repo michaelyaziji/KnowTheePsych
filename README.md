@@ -1,10 +1,10 @@
-# KnowThee.AI - Leadership Assessment Tool
+# KnowThee.AI - Psychology Assessment Tool
 
-An AI-powered leadership assessment and development tool that generates personalized leadership profiles from various document inputs.
+An AI-powered psychology assessment and development tool that generates personalized psychology profiles from various document inputs.
 
 ## Features
 - Upload and process PDF and DOCX files (CVs, 360s, psychometric assessments)
-- AI-powered leadership profile generation
+- AI-powered psychology profile generation
 - Privacy-first design
 - Export profiles to PDF
 

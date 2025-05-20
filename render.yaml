@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: knowtheeMay9
+    name: knowtheeAppPsych
     env: python
     buildCommand: pip install -r requirements.txt
     startCommand: streamlit run app.py --server.port=$PORT --server.address=0.0.0.0

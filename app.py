@@ -520,10 +520,10 @@ def generate_pptx_from_json(json_data, template_path=None):
         # Slide indexing starts at 0
         section_map = {
             "Profile Summary": 2,         # Slide 3
-            "Leadership Summary": 2,      # Slide 3 (alternate name)
+            "Psychology Summary": 2,      # Slide 3 (alternate name)
             "Key Strengths": 3,           # Slide 4
             "Potential Derailers": 4,     # Slide 5 
-            "Leadership Style": 5,        # Slide 6
+            "Psychological Style": 5,        # Slide 6
             "Role Fit Chart - Good Fit": 6,  # Slide 7
             "Role Fit Chart - Poor Fit": 7,   # Slide 8
             "Role Fit Chart - Bad Fit": 7,    # Slide 8 (using "Bad" instead of "Poor")
@@ -817,7 +817,7 @@ def main():
     
     # Remove the header-bar div and inline the content
     st.markdown(
-        '<div class="progress-cue">Based on the data you provide, we will generate a <span class="key-idea">custom leadership profile</span> and tailored guidance based on what you share. By default we will generate a PowerPoint with the following sections: <br> 1. An integrated leadership profile <br> 2. Key Strengths <br> 3. Potential Derailers <br> 4. Their Overall Leadership Style <br> 5. The types of jobs that would be well- or ill-suited for them, and why.<br><br>If you have a special query, enter it below and we will specifically address it on this page, along with the PowerPoint.</div>', 
+        '<div class="progress-cue">Based on the data you provide, we will generate a <span class="key-idea">custom psychology profile</span> and tailored guidance based on what you share. By default we will generate a PowerPoint with the following sections: <br> 1. An integrated psychology profile <br> 2. Key Strengths <br> 3. Potential Derailers <br> 4. Their Overall Psychological Style <br> 5. The types of jobs that would be well- or ill-suited for them, and why.<br><br>If you have a special query, enter it below and we will specifically address it on this page, along with the PowerPoint.</div>', 
         unsafe_allow_html=True
     )
 
@@ -834,7 +834,7 @@ def main():
     st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
 
     st.markdown('<div class="section-title">Context Documents <span style="font-size:1.2rem; font-weight:400;"></span></div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-desc">What is the leadership context? What would be helpful for us to know? <span class="bold-action">Upload</span> role descriptions, leadership models, or strategic plans to help us align the profile to future needs.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-desc">What is the psychological context? What would be helpful for us to know? <span class="bold-action">Upload</span> role descriptions, psychological models, or strategic plans to help us align the profile to future needs.</div>', unsafe_allow_html=True)
     context_docs = st.file_uploader("Upload PDF or DOCX", type=['pdf', 'docx'], accept_multiple_files=True, key="context")
 
     st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
@@ -885,7 +885,7 @@ def main():
 
             vector_store.store_documents(all_docs)  # all_docs is now a list of strings
 
-            with st.spinner("Generating leadership profile...This could take a minute. Please wait."):
+            with st.spinner("Generating psychology profile...This could take a minute. Please wait."):
                 st.session_state.profile = profile_generator.generate_profile(
                     vector_store.get_relevant_chunks(),
                     all_metadatas  # Pass the metadata list for the document summary
@@ -939,7 +939,7 @@ def main():
                     st.download_button(
                         label="Download PowerPoint",
                         data=pptx_io,
-                        file_name="leadership_report.pptx",
+                        file_name="psychology_report.pptx",
                         mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
                         key="download_pptx"
                     )
@@ -951,7 +951,7 @@ def main():
                         st.download_button(
                             label="Download PowerPoint",
                             data=pptx_io,
-                            file_name="leadership_report.pptx",
+                            file_name="psychology_report.pptx",
                             mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
                             key="download_pptx"
                         )
@@ -975,7 +975,7 @@ def main():
         # st.download_button(
         #     label="Export to PDF",
         #     data=pdf_bytes,
-        #     file_name="leadership_profile.pdf",
+        #     file_name="psychology_profile.pdf",
         #     mime="application/pdf"
         # )
 

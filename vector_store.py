@@ -13,7 +13,7 @@ class VectorStore:
         
         # Create or get the collection
         self.collection = self.client.get_or_create_collection(
-            name="leadership_documents",
+            name="psychology_documents",
             metadata={"hnsw:space": "cosine"}
         )
     
