@@ -836,19 +836,19 @@ def main():
     st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
     st.markdown('<div class="section-title"> Documents about the Individual<br> <span style="font-size:1.2rem; font-weight:400;"></span></div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-desc">Who are we profiling? Help us get to know this patient/client. The more you share, the more useful the profile will be. <span class="bold-action">Upload</span> assessments, medical history, previous diagnoses, and other insights that reveal their psychological profile.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-desc">Who are we assessing? Help us get to know this patient/client. The more you share, the more comprehensive the assessment will be. <span class="bold-action">Upload</span> psychological assessments, medical records, previous diagnoses, and other clinical documentation.</div>', unsafe_allow_html=True)
     subject_docs = st.file_uploader("Upload PDF or DOCX", type=['pdf', 'docx'], accept_multiple_files=True, key="subject")
 
     st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
 
-    st.markdown('<div class="section-title">Context Documents <span style="font-size:1.2rem; font-weight:400;"></span></div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-desc">What is the psychological context? What would be helpful for us to know? <span class="bold-action">Upload</span> diagnostic criteria, treatment history, psychological models, or reference materials to help us better assess the patient.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Contextual Information <span style="font-size:1.2rem; font-weight:400;"></span></div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-desc">What is the clinical context? What would be helpful for us to know? <span class="bold-action">Upload</span> diagnostic criteria, treatment history, assessment measures, or relevant clinical guidelines to help us conduct a thorough assessment.</div>', unsafe_allow_html=True)
     context_docs = st.file_uploader("Upload PDF or DOCX", type=['pdf', 'docx'], accept_multiple_files=True, key="context")
 
     st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
 
-    st.markdown('<div class="section-title">Special Query <span style="font-size:1.2rem; font-weight:400;"></span></div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-desc">Do you have any specific questions in mind? <br>Examples: "Is this patient showing signs of treatment resistance?" • "What therapeutic approaches might be most effective?" • "Are there any risk factors we should monitor closely?"</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Clinical Consultation Question <span style="font-size:1.2rem; font-weight:400;"></span></div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-desc">Do you have any specific clinical questions in mind? <br>Examples: "Are there any contraindications for CBT with this patient?" • "What differential diagnoses should be considered?" • "What specific risk factors should be monitored throughout treatment?"</div>', unsafe_allow_html=True)
     user_question = st.text_area(" ", height=80, key="user_question")
 
     if st.button("Submit"):
@@ -893,7 +893,7 @@ def main():
 
             vector_store.store_documents(all_docs)  # all_docs is now a list of strings
 
-            with st.spinner("Generating psychology profile...This could take a minute. Please wait."):
+            with st.spinner("Generating clinical assessment...This could take a minute. Please wait."):
                 st.session_state.profile = profile_generator.generate_profile(
                     vector_store.get_relevant_chunks(),
                     all_metadatas  # Pass the metadata list for the document summary
@@ -923,7 +923,7 @@ def main():
             if not template_path.exists():
                 template_path = None
                 
-            with st.spinner("Generating PowerPoint... This could take about a minute, please wait."):
+            with st.spinner("Generating Clinical Assessment PowerPoint... This could take about a minute, please wait."):
                 try:
                     # Capture logs for debugging but don't display them by default
                     import io
@@ -945,9 +945,9 @@ def main():
                             st.code(logs)
                     
                     st.download_button(
-                        label="Download PowerPoint",
+                        label="Download Clinical Assessment",
                         data=pptx_io,
-                        file_name="psychology_report.pptx",
+                        file_name="clinical_assessment.pptx",
                         mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
                         key="download_pptx"
                     )
@@ -957,9 +957,9 @@ def main():
                     try:
                         pptx_io = generate_pptx_from_json(profile_json, template_path=None)
                         st.download_button(
-                            label="Download PowerPoint",
+                            label="Download Clinical Assessment",
                             data=pptx_io,
-                            file_name="psychology_report.pptx",
+                            file_name="clinical_assessment.pptx",
                             mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
                             key="download_pptx"
                         )
@@ -973,7 +973,7 @@ def main():
             st.markdown('</div>', unsafe_allow_html=True)
 
         if st.session_state.question_answer:
-            st.markdown('<div class="section-title">Special Question Answer</div>', unsafe_allow_html=True)
+            st.markdown('<div class="section-title">Clinical Consultation Response</div>', unsafe_allow_html=True)
             st.markdown('<div class="profile-section">', unsafe_allow_html=True)
             st.write(st.session_state.question_answer)
             st.markdown('</div>', unsafe_allow_html=True)
@@ -988,7 +988,7 @@ def main():
         # )
 
 
-    st.markdown('<div class="footer">KNOWTHEE.AI</div>', unsafe_allow_html=True)
+    st.markdown('<div class="footer">KNOWTHEE.AI CLINICAL ASSESSMENT</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
