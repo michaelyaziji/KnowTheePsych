@@ -518,17 +518,19 @@ def generate_pptx_from_json(json_data, template_path=None):
         
         # Define a map from section titles (from the JSON) to slide numbers in the template
         section_to_slide = {
-            "Profile Summary": 2,          # Slide 3
-            "Psychology Summary": 2,      # Slide 3 (alternate name)
-            "Key Strengths": 3,           # Slide 4
-            "Potential Challenges": 4,     # Slide 5 
-            "Psychological Style": 5,        # Slide 6
-            "Treatment Considerations": 6,  # Slide 7
-            "Risk Factors": 7, # Slide 8
+            "Presenting Concerns and Goals": 2,     # Slide 3
+            "History Snapshot": 3,                  # Slide 4
+            "Behavioral Observations": 4,           # Slide 5
+            "Test Results by Domain": 5,            # Slide 6
+            "Integrative Case Formulation": 6,      # Slide 7
+            "Diagnoses": 7,                         # Slide 8
             # For legacy support and backward compatibility:
-            "Personality": 2,              # Map to Profile Summary (slide 3)
-            "Leadership Style": 5,          # Map to Psychological Style (slide 6)
-            "Overall Leadership Style": 5    # Map to Psychological Style (slide 6)
+            "Profile Summary": 2,                   # Map to Presenting Concerns (slide 3)
+            "Key Strengths": 4,                     # Map to Behavioral Observations (slide 5)
+            "Potential Challenges": 5,              # Map to Test Results (slide 6)
+            "Psychological Style": 6,               # Map to Case Formulation (slide 7)
+            "Treatment Considerations": 7,          # Map to Diagnoses (slide 8)
+            "Risk Factors": 7                       # Map to Diagnoses (slide 8)
         }
         
         # Process each section from the JSON data
@@ -555,33 +557,39 @@ def generate_pptx_from_json(json_data, template_path=None):
                         break
                 
                 # If still no match, try more relaxed matching using section title subset
-                if (section_name.lower().startswith('profile') or section_name.lower().startswith('summary')) and (idx == 2):
+                if (section_name.lower().startswith('present') or section_name.lower().startswith('concern')) and (idx == 2):
                     slide_idx = idx
-                    print(f"Mapping '{section_name}' to slide {idx+1} (Profile Summary)")
-                elif "strength" in section_name.lower() and (idx == 3):
+                    print(f"Mapping '{section_name}' to slide {idx+1} (Presenting Concerns and Goals)")
+                elif "history" in section_name.lower() and (idx == 3):
                     slide_idx = idx
-                    print(f"Mapping '{section_name}' to slide {idx+1} (Key Strengths)")
-                elif "challenge" in section_name.lower() and (idx == 4):
+                    print(f"Mapping '{section_name}' to slide {idx+1} (History Snapshot)")
+                elif "observation" in section_name.lower() or "mental status" in section_name.lower() and (idx == 4):
                     slide_idx = idx
-                    print(f"Mapping '{section_name}' to slide {idx+1} (Potential Challenges)")
-                elif "style" in section_name.lower() and (idx == 5):
+                    print(f"Mapping '{section_name}' to slide {idx+1} (Behavioral Observations)")
+                elif "test" in section_name.lower() or "results" in section_name.lower() and (idx == 5):
                     slide_idx = idx
-                    print(f"Mapping '{section_name}' to slide {idx+1} (Psychological Style)")
-                elif "treatment" in section_name.lower() and (idx == 6):
+                    print(f"Mapping '{section_name}' to slide {idx+1} (Test Results by Domain)")
+                elif "formulation" in section_name.lower() or "case" in section_name.lower() and (idx == 6):
                     slide_idx = idx
-                    print(f"Mapping '{section_name}' to slide {idx+1} (Treatment Considerations)")
-                elif "risk" in section_name.lower() and (idx == 7):
+                    print(f"Mapping '{section_name}' to slide {idx+1} (Integrative Case Formulation)")
+                elif "diagnos" in section_name.lower() or "differential" in section_name.lower() and (idx == 7):
                     slide_idx = idx
-                    print(f"Mapping '{section_name}' to slide {idx+1} (Risk Factors)")
+                    print(f"Mapping '{section_name}' to slide {idx+1} (Diagnoses)")
                 
-            # If still no match, try keyword matching for treatment or risk sections
+            # If still no match, try keyword matching for diagnosis or test sections
             if slide_idx is None:
-                if "treatment" in section_name.lower() or "intervention" in section_name.lower() or "therapy" in section_name.lower():
-                    slide_idx = 6  # Map to Treatment Considerations
-                    print(f"Keyword mapping '{section_name}' to slide 7 (Treatment Considerations)")
-                elif "risk" in section_name.lower() or "warning" in section_name.lower() or "caution" in section_name.lower():
-                    slide_idx = 7  # Map to Risk Factors
-                    print(f"Keyword mapping '{section_name}' to slide 8 (Risk Factors)")
+                if "diagnos" in section_name.lower() or "dsm" in section_name.lower() or "icd" in section_name.lower():
+                    slide_idx = 7  # Map to Diagnoses
+                    print(f"Keyword mapping '{section_name}' to slide 8 (Diagnoses)")
+                elif "test" in section_name.lower() or "assessment" in section_name.lower() or "measure" in section_name.lower():
+                    slide_idx = 5  # Map to Test Results
+                    print(f"Keyword mapping '{section_name}' to slide 6 (Test Results)")
+                elif "history" in section_name.lower() or "background" in section_name.lower():
+                    slide_idx = 3  # Map to History
+                    print(f"Keyword mapping '{section_name}' to slide 4 (History Snapshot)")
+                elif "observation" in section_name.lower() or "mental status" in section_name.lower() or "mse" in section_name.lower():
+                    slide_idx = 4  # Map to Behavioral Observations
+                    print(f"Keyword mapping '{section_name}' to slide 5 (Behavioral Observations)")
             
             if slide_idx is not None and slide_idx < len(prs.slides):
                 # Use existing slide from template
@@ -817,7 +825,7 @@ def main():
     
     # Remove the header-bar div and inline the content
     st.markdown(
-        '<div class="progress-cue">Based on the data you provide, we will generate a <span class="key-idea">custom psychology profile</span> and tailored guidance based on what you share. By default we will generate a PowerPoint with the following sections: <br> 1. An integrated psychology profile <br> 2. Key Strengths <br> 3. Potential Challenges <br> 4. Their Overall Psychological Style <br> 5. Treatment considerations and potential intervention strategies.<br><br>If you have a special query, enter it below and we will specifically address it on this page, along with the PowerPoint.</div>', 
+        '<div class="progress-cue">Based on the data you provide, we will generate a <span class="key-idea">comprehensive clinical assessment</span> and tailored guidance based on what you share. By default we will generate a PowerPoint with the following sections: <br> 1. Presenting Concerns and Goals <br> 2. History Snapshot <br> 3. Behavioral Observations <br> 4. Test Results by Domain <br> 5. Integrative Case Formulation <br> 6. Diagnoses<br><br>If you have a special query, enter it below and we will specifically address it on this page, along with the PowerPoint.</div>', 
         unsafe_allow_html=True
     )
 

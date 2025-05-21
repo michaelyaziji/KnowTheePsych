@@ -138,32 +138,32 @@ class ProfileGenerator:
             f"Based on the following psychology documents, generate a comprehensive psychology profile:\n\n"
             f"Person Information:\n{metadata_text}\n\n"
             "IMPORTANT FORMATTING INSTRUCTIONS:\n"
-            "- For 'Key Strengths', 'Potential Challenges', 'Treatment Considerations', and 'Risk Factors' sections, ALWAYS format the content as a numbered list (1., 2., 3., etc.)\n"
+            "- For 'Presenting Concerns and Goals', 'Test Results by Domain', 'Diagnoses' sections, ALWAYS format the content as a numbered list (1., 2., 3., etc.)\n"
             "- Insert a blank line between each numbered item (double line break)\n"
-            "- Each point should be focused on a single strength, challenge, or consideration\n"
+            "- Each point should be focused on a single concern, test result, or diagnosis\n"
             "- Limit each enumerated list to a maximum of 5 items\n"
-            "- For 'Profile Summary' and 'Psychological Style' sections, use paragraph format\n"
+            "- For other sections, use paragraph format\n"
             "- Each significant claim should include a parenthetical reference to the source (e.g., 'exhibits anxious tendencies (Psychological Assessment)')\n"
             "- Do not use markdown formatting or special characters that might interfere with JSON\n\n"
             "Sections:\n"
-            "1. Profile Summary\n"
-            "2. Key Strengths\n"
-            "3. Potential Challenges\n"
-            "4. Psychological Style\n"
-            "5. Treatment Considerations\n"
-            "6. Risk Factors\n\n"
+            "1. Presenting Concerns and Goals\n"
+            "2. History Snapshot\n"
+            "3. Behavioral Observations\n"
+            "4. Test Results by Domain\n"
+            "5. Integrative Case Formulation\n"
+            "6. Diagnoses\n\n"
             "Example output:\n"
             "[\n"
-            "  {\"section\": \"Profile Summary\", \"content\": \"The patient exhibits signs of moderate anxiety with comorbid depressive features (Psychological Assessment) and has shown partial response to previous cognitive-behavioral interventions (Treatment History)...\", \"sources\": \"Psychological Assessment, Treatment History\"},\n"
-            "  {\"section\": \"Key Strengths\", \"content\": \"1. Strong introspective abilities and psychological mindedness (Psychological Assessment)\\n\\n2. Consistent engagement in therapeutic process (Treatment Notes)\\n\\n3. Supportive family environment (Clinical Interview)\", \"sources\": \"Psychological Assessment, Treatment Notes, Clinical Interview\"},\n"
-            "  {\"section\": \"Potential Challenges\", \"content\": \"1. Tendency toward rumination and catastrophic thinking (Psychological Assessment)\\n\\n2. Difficulty with emotional regulation during acute stress (Treatment Notes)\\n\\n3. Inconsistent application of coping strategies (Psychological Assessment)\", \"sources\": \"Psychological Assessment, Treatment Notes\"},\n"
-            "  {\"section\": \"Psychological Style\", \"content\": \"The patient demonstrates an anxious-avoidant attachment style (Psychological Assessment) with a tendency to withdraw during interpersonal conflicts (Clinical Interview)...\", \"sources\": \"Psychological Assessment, Clinical Interview\"},\n"
-            "  {\"section\": \"Treatment Considerations\", \"content\": \"1. Structured cognitive-behavioral approaches with emphasis on thought records (Psychological Assessment)\\n\\n2. Gradual exposure to anxiety-provoking situations (Treatment History)\\n\\n3. Mindfulness training to reduce rumination (Clinical Interview)\", \"sources\": \"Psychological Assessment, Treatment History, Clinical Interview\"},\n"
-            "  {\"section\": \"Risk Factors\", \"content\": \"1. History of passive suicidal ideation during major depressive episodes (Treatment History)\\n\\n2. Social isolation during periods of heightened anxiety (Psychological Assessment)\\n\\n3. Tendency to discontinue medication without consultation (Treatment Notes)\", \"sources\": \"Treatment History, Psychological Assessment, Treatment Notes\"}\n"
+            "  {\"section\": \"Presenting Concerns and Goals\", \"content\": \"1. Patient presents with moderate anxiety symptoms and panic attacks occurring 2-3 times weekly for the past three months (Clinical Interview)\\n\\n2. Reports significant impact on sleep and work performance (Psychological Assessment)\\n\\n3. Goals include developing coping strategies for anxiety and improving sleep quality (Treatment Notes)\", \"sources\": \"Clinical Interview, Psychological Assessment, Treatment Notes\"},\n"
+            "  {\"section\": \"History Snapshot\", \"content\": \"Psychiatric/Psychological: Previous diagnosis of adjustment disorder at age 25 following job loss, responded well to brief therapy (Medical History)\\n\\nMedical/Neurological: Chronic migraines since adolescence, currently managed with sumatriptan (Medical History)\\n\\nDevelopmental: No significant developmental concerns or delays reported (Clinical Interview)\\n\\nFamily & Social: Lives with supportive partner, reports close relationship with parents (Psychological Assessment)\\n\\nEducational/Occupational: Master's degree in business, currently employed as project manager with high job satisfaction (CV/Resume)\", \"sources\": \"Medical History, Clinical Interview, Psychological Assessment, CV/Resume\"},\n"
+            "  {\"section\": \"Behavioral Observations\", \"content\": \"Patient presented as well-groomed with appropriate affect. Speech was normal in rate and volume. Thought process was logical and goal-directed. No evidence of hallucinations or delusions. Insight and judgment intact. Mild psychomotor agitation observed when discussing work stressors (Clinical Interview).\", \"sources\": \"Clinical Interview\"},\n"
+            "  {\"section\": \"Test Results by Domain\", \"content\": \"1. Cognitive & Neuropsychological: WAIS-IV results show high average overall cognitive functioning (FSIQ 115) with relative strengths in verbal comprehension (Standardized Tests)\\n\\n2. Personality/Emotional: MMPI-2 profile suggests elevated anxiety (T=68) and mild depression (T=61) with no evidence of serious psychopathology (Psychological Assessment)\\n\\n3. Symptom Measures: GAD-7 score of 14 indicating moderate anxiety; PHQ-9 score of 8 indicating mild depression (Standardized Tests)\\n\\n4. Adaptive Functioning: WHODAS 2.0 shows moderate impairment in life activities domain (score 2.1) but minimal impairment in other domains (Psychological Assessment)\", \"sources\": \"Standardized Tests, Psychological Assessment\"},\n"
+            "  {\"section\": \"Integrative Case Formulation\", \"content\": \"Predisposing Factors: Family history of anxiety disorders and perfectionistic tendencies (Medical History)\\n\\nPrecipitating Factors: Recent promotion with increased responsibilities and deadline pressure (Clinical Interview)\\n\\nPerpetuating Factors: Maladaptive coping strategies including work avoidance and catastrophic thinking (Psychological Assessment)\\n\\nProtective Factors: Strong social support system, good insight, and previous positive response to therapy (Treatment Notes)\", \"sources\": \"Medical History, Clinical Interview, Psychological Assessment, Treatment Notes\"},\n"
+            "  {\"section\": \"Diagnoses\", \"content\": \"1. F41.1 Generalized Anxiety Disorder - Meets criteria based on excessive worry, difficulty controlling anxiety, restlessness, and sleep disturbance (DSM-5-TR)\\n\\n2. F51.01 Insomnia Disorder - Sleep initiation and maintenance problems related to anxiety but warranting clinical attention (DSM-5-TR)\\n\\n3. Rule Out: F34.1 Persistent Depressive Disorder - Some depressive symptoms present but not meeting full criteria for duration and severity (DSM-5-TR)\", \"sources\": \"Psychological Assessment, Clinical Interview\"}\n"
             "]\n\n"
             f"{context}\n\n"
             "Return only the JSON array, with no extra commentary or explanation.\n"
-            "Remember to format 'Key Strengths', 'Potential Challenges', 'Treatment Considerations', and 'Risk Factors' as numbered lists with proper line breaks between items."
+            "Remember to format list-type sections with numbered items and proper line breaks between items, and structure the History Snapshot with clear domain headings."
         )
 
         response = client.chat.completions.create(
@@ -223,66 +223,60 @@ class ProfileGenerator:
         return profile_content
 
     def answer_question(self, document_chunks: List[str], question: str) -> str:
-        """Answer a user question based on the document context."""
+        """Answer a special clinical question based on the document context."""
         context = "\n\n".join(document_chunks)
         
-        # Identify the types of documents based on content - same as in generate_profile
+        # Identify the types of documents based on content
         assessment_types = []
         
         # Check for psychological assessment content
-        assessment_terms = ["psychological assessment", "psych eval", "mental status", "diagnosis", "dsm", "icd", "symptoms"]
+        assessment_terms = ["psychological assessment", "psychometric", "psych eval", "mental status", "diagnosis", "dsm", "icd", "symptoms"]
         has_assessment = any(term in context.lower() for term in assessment_terms)
         if has_assessment:
             assessment_types.append("Psychological Assessment")
             
-        # Check for treatment notes content
-        treatment_terms = ["treatment notes", "therapy notes", "session notes", "progress notes"]
-        has_treatment = any(term in context.lower() for term in treatment_terms)
-        if has_treatment:
-            assessment_types.append("Treatment Notes")
+        # Check for clinical interview content
+        interview_terms = ["clinical interview", "intake", "initial assessment", "client report", "interview notes"]
+        has_interview = any(term in context.lower() for term in interview_terms)
+        if has_interview:
+            assessment_types.append("Clinical Interview")
             
         # Check for medical history content
-        medical_terms = ["medical history", "medication", "health history", "physical exam", "vitals"]
+        medical_terms = ["medical history", "health history", "medication", "physical health", "vitals"]
         has_medical = any(term in context.lower() for term in medical_terms)
         if has_medical:
             assessment_types.append("Medical History")
         
-        # Check for clinical interview
-        interview_terms = ["clinical interview", "intake", "initial assessment", "client report"]
-        has_interview = any(term in context.lower() for term in interview_terms)
-        if has_interview:
-            assessment_types.append("Clinical Interview")
+        # Check for treatment notes
+        treatment_terms = ["treatment notes", "therapy notes", "progress notes", "session notes"]
+        has_treatment = any(term in context.lower() for term in treatment_terms)
+        if has_treatment:
+            assessment_types.append("Treatment Notes")
         
         # Check for standardized tests
-        test_terms = ["mmpi", "wais", "wisc", "beck", "hamilton", "gaf", "phq", "gad"]
+        test_terms = ["test results", "mmpi", "wais", "wisc", "beck", "hamilton", "gaf", "phq", "gad", "standardized", "assessment results"]
         has_tests = any(term in context.lower() for term in test_terms)
         if has_tests:
             assessment_types.append("Standardized Tests")
             
-        # Check for personality assessment content
-        hogan_terms = ["hogan", "hpi", "hds", "mvpi", "personality inventory"]
-        has_hogan = any(term in context.lower() for term in hogan_terms)
-        if has_hogan:
-            assessment_types.append("Personality Assessment")
-            
         # Combine detected document types
         detected_doc_types = ", ".join(assessment_types) if assessment_types else "Submitted Documents"
         
-        # Add the same citation guidance as in generate_profile
+        # Add citation guidance for clinical assessment
         citation_guidance = """
 EXTREMELY IMPORTANT GUIDANCE ON SOURCES AND CITATIONS:
 
-1. When citing sources, DO NOT refer to them by their file type (e.g., 'PDF', 'DOCX'). Instead, identify them by their content type:
-   - Refer to psychological assessments as 'Psychological Assessment' 
-   - Refer to therapy documentation as 'Treatment Notes'
+1. When citing sources, DO NOT refer to them by their file type (e.g., 'PDF', 'DOCX'). Instead, identify them by their clinical content type:
+   - Refer to formal evaluations as 'Psychological Assessment' 
+   - Refer to documented discussions as 'Clinical Interview'
    - Refer to medical information as 'Medical History'
-   - Refer to personality measures as 'Personality Assessment'
-   - For other documents, identify them by their purpose (e.g., 'Clinical Interview', 'Standardized Tests')
+   - Refer to measurement data as 'Standardized Tests'
+   - Refer to session documentation as 'Treatment Notes'
 
-2. For EVERY significant claim or insight in your analysis, include a brief in-text citation showing the source, like this: 
-   '... exhibits anxiety symptoms (Psychological Assessment).' or '... has responded well to CBT techniques (Treatment Notes).'
+2. For EVERY claim in your analysis, include a brief in-text citation showing the source, like this: 
+   '... presents with significant anxiety symptoms (Psychological Assessment).' or '... reports improvement with relaxation techniques (Treatment Notes).'
 
-3. Do not make claims that cannot be directly supported by the provided documents. If you're unsure about a claim, clearly indicate this.
+3. Do not make diagnostic or clinical claims that cannot be directly supported by the provided documents.
 
 4. At the end of your response, include a "References" section that lists all the source documents you cited.
 
@@ -292,7 +286,7 @@ EXTREMELY IMPORTANT GUIDANCE ON SOURCES AND CITATIONS:
    {detected_doc_types}
 """
 
-        prompt = f"""Based on the following patient documents, answer this special question from the mental health practitioner:
+        prompt = f"""Based on the following patient documentation, answer this clinical question from the mental health practitioner:
 
 {citation_guidance}
 
@@ -300,11 +294,11 @@ EXTREMELY IMPORTANT GUIDANCE ON SOURCES AND CITATIONS:
 
 Question: {question}
 
-Please provide a detailed, evidence-based answer, providing specific in-text citations for each claim (e.g., "exhibits anxiety symptoms (Psychological Assessment)").
+Please provide a detailed, evidence-based clinical answer, providing specific in-text citations for each claim (e.g., "presents with generalized anxiety symptoms (Psychological Assessment)").
 
 End your response with a "References" section that lists all the documents you cited.
 
-Remember: Only make claims that are directly supported by the documents. Include parenthetical citations for each major claim."""
+Remember: Only make claims that are directly supported by the clinical documentation. Include parenthetical citations for each major clinical observation or conclusion."""
 
         response = client.chat.completions.create(
             model="gpt-4.1-2025-04-14",
