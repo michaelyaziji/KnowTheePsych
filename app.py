@@ -248,9 +248,9 @@ document_processor = DocumentProcessor()
 vector_store = VectorStore()
 profile_generator = ProfileGenerator()
 
-# Load and process reference PDFs from HowToInterpretHogans/
+# Load and process reference PDFs from HowToInterpret/
 def load_reference_docs():
-    reference_folder = "HowToInterpretHogans"
+    reference_folder = "HowToInterpret"
     reference_texts = []
     for filename in os.listdir(reference_folder):
         if filename.lower().endswith('.pdf'):
