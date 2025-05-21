@@ -516,32 +516,19 @@ def generate_pptx_from_json(json_data, template_path=None):
         
         # Keep cover slide (slide 1) and table of contents (slide 2) as is
         
-        # Map each section to the corresponding template slide
-        # Slide indexing starts at 0
-        section_map = {
-            "Profile Summary": 2,         # Slide 3
+        # Define a map from section titles (from the JSON) to slide numbers in the template
+        section_to_slide = {
+            "Profile Summary": 2,          # Slide 3
             "Psychology Summary": 2,      # Slide 3 (alternate name)
             "Key Strengths": 3,           # Slide 4
-            "Potential Derailers": 4,     # Slide 5 
+            "Potential Challenges": 4,     # Slide 5 
             "Psychological Style": 5,        # Slide 6
-            "Role Fit Chart - Good Fit": 6,  # Slide 7
-            "Role Fit Chart - Poor Fit": 7,   # Slide 8
-            "Role Fit Chart - Bad Fit": 7,    # Slide 8 (using "Bad" instead of "Poor")
-            "Role-fit Chart: Good fit": 6,   # Alternate spelling
-            "Role-fit Chart: Poor fit": 7,   # Alternate spelling
-            "Roles That Would Fit": 6,    # Alternate wording (slide 7)
-            "Roles That Would Not Fit": 7, # Alternate wording (slide 8)
-            "Good Role Fit": 6,           # Another variation (slide 7)
-            "Poor Role Fit": 7,           # Another variation (slide 8)
-            "Bad Role Fit": 7,            # Another variation (slide 8)
-            "Role Fit: Good": 6,          # Another variation (slide 7)
-            "Role Fit: Poor": 7,          # Another variation (slide 8)
-            "Role Fit: Bad": 7,           # Another variation (slide 8)
-            "Good Fit Roles": 6,          # Another variation (slide 7)
-            "Bad Fit Roles": 7,           # Another variation (slide 8)
-            "Poor Fit Roles": 7,          # Another variation (slide 8)
-            "Special Queries, if any": 8,    # Slide 9
-            "Special Query": 8,             # Alternate name
+            "Treatment Considerations": 6,  # Slide 7
+            "Risk Factors": 7, # Slide 8
+            # For legacy support and backward compatibility:
+            "Personality": 2,              # Map to Profile Summary (slide 3)
+            "Leadership Style": 5,          # Map to Psychological Style (slide 6)
+            "Overall Leadership Style": 5    # Map to Psychological Style (slide 6)
         }
         
         # Process each section from the JSON data
@@ -557,31 +544,44 @@ def generate_pptx_from_json(json_data, template_path=None):
             sources = clean_source_text(sources)
             
             # Find the slide index for this section
-            slide_idx = section_map.get(section_name)
+            slide_idx = section_to_slide.get(section_name)
             if slide_idx is None:
                 # Try more flexible matching for alternate section names
-                for map_name, idx in section_map.items():
+                for map_name, idx in section_to_slide.items():
                     # Check for strict containment first
                     if map_name.lower() in section_name.lower() or section_name.lower() in map_name.lower():
                         slide_idx = idx
                         print(f"Found slide match: '{section_name}' -> '{map_name}' (slide {idx+1})")
                         break
                 
-                # If still no match, try keyword matching for role fit sections
-                if slide_idx is None:
-                    section_lower = section_name.lower()
-                    # Check for good/positive fit keywords
-                    if any(word in section_lower for word in ['good fit', 'would fit', 'positive', 'strong match']):
-                        slide_idx = 6  # Slide 7 - Good fit
-                        print(f"Found keyword match for good fit: '{section_name}' (slide 7)")
-                    # Check for poor/bad fit keywords
-                    elif any(word in section_lower for word in ['poor fit', 'bad fit', 'not fit', 'wouldn\'t fit', 'negative']):
-                        slide_idx = 7  # Slide 8 - Poor fit
-                        print(f"Found keyword match for poor fit: '{section_name}' (slide 8)")
-                    # Special query match
-                    elif any(word in section_lower for word in ['special', 'query', 'question', 'answer']):
-                        slide_idx = 8  # Slide 9 - Special query
-                        print(f"Found keyword match for special query: '{section_name}' (slide 9)")
+                # If still no match, try more relaxed matching using section title subset
+                if (section_name.lower().startswith('profile') or section_name.lower().startswith('summary')) and (idx == 2):
+                    slide_idx = idx
+                    print(f"Mapping '{section_name}' to slide {idx+1} (Profile Summary)")
+                elif "strength" in section_name.lower() and (idx == 3):
+                    slide_idx = idx
+                    print(f"Mapping '{section_name}' to slide {idx+1} (Key Strengths)")
+                elif "challenge" in section_name.lower() and (idx == 4):
+                    slide_idx = idx
+                    print(f"Mapping '{section_name}' to slide {idx+1} (Potential Challenges)")
+                elif "style" in section_name.lower() and (idx == 5):
+                    slide_idx = idx
+                    print(f"Mapping '{section_name}' to slide {idx+1} (Psychological Style)")
+                elif "treatment" in section_name.lower() and (idx == 6):
+                    slide_idx = idx
+                    print(f"Mapping '{section_name}' to slide {idx+1} (Treatment Considerations)")
+                elif "risk" in section_name.lower() and (idx == 7):
+                    slide_idx = idx
+                    print(f"Mapping '{section_name}' to slide {idx+1} (Risk Factors)")
+                
+            # If still no match, try keyword matching for treatment or risk sections
+            if slide_idx is None:
+                if "treatment" in section_name.lower() or "intervention" in section_name.lower() or "therapy" in section_name.lower():
+                    slide_idx = 6  # Map to Treatment Considerations
+                    print(f"Keyword mapping '{section_name}' to slide 7 (Treatment Considerations)")
+                elif "risk" in section_name.lower() or "warning" in section_name.lower() or "caution" in section_name.lower():
+                    slide_idx = 7  # Map to Risk Factors
+                    print(f"Keyword mapping '{section_name}' to slide 8 (Risk Factors)")
             
             if slide_idx is not None and slide_idx < len(prs.slides):
                 # Use existing slide from template
@@ -817,7 +817,7 @@ def main():
     
     # Remove the header-bar div and inline the content
     st.markdown(
-        '<div class="progress-cue">Based on the data you provide, we will generate a <span class="key-idea">custom psychology profile</span> and tailored guidance based on what you share. By default we will generate a PowerPoint with the following sections: <br> 1. An integrated psychology profile <br> 2. Key Strengths <br> 3. Potential Derailers <br> 4. Their Overall Psychological Style <br> 5. The types of jobs that would be well- or ill-suited for them, and why.<br><br>If you have a special query, enter it below and we will specifically address it on this page, along with the PowerPoint.</div>', 
+        '<div class="progress-cue">Based on the data you provide, we will generate a <span class="key-idea">custom psychology profile</span> and tailored guidance based on what you share. By default we will generate a PowerPoint with the following sections: <br> 1. An integrated psychology profile <br> 2. Key Strengths <br> 3. Potential Challenges <br> 4. Their Overall Psychological Style <br> 5. Treatment considerations and potential intervention strategies.<br><br>If you have a special query, enter it below and we will specifically address it on this page, along with the PowerPoint.</div>', 
         unsafe_allow_html=True
     )
 
@@ -828,19 +828,19 @@ def main():
     st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
     st.markdown('<div class="section-title"> Documents about the Individual<br> <span style="font-size:1.2rem; font-weight:400;"></span></div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-desc">Who are we profiling? Help us get to know this leader. The more you share, the more useful the profile will be. <span class="bold-action">Upload</span> assessments, CVs, 360s, and other insights that reveal how they think, act, and lead.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-desc">Who are we profiling? Help us get to know this patient/client. The more you share, the more useful the profile will be. <span class="bold-action">Upload</span> assessments, medical history, previous diagnoses, and other insights that reveal their psychological profile.</div>', unsafe_allow_html=True)
     subject_docs = st.file_uploader("Upload PDF or DOCX", type=['pdf', 'docx'], accept_multiple_files=True, key="subject")
 
     st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
 
     st.markdown('<div class="section-title">Context Documents <span style="font-size:1.2rem; font-weight:400;"></span></div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-desc">What is the psychological context? What would be helpful for us to know? <span class="bold-action">Upload</span> role descriptions, psychological models, or strategic plans to help us align the profile to future needs.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-desc">What is the psychological context? What would be helpful for us to know? <span class="bold-action">Upload</span> diagnostic criteria, treatment history, psychological models, or reference materials to help us better assess the patient.</div>', unsafe_allow_html=True)
     context_docs = st.file_uploader("Upload PDF or DOCX", type=['pdf', 'docx'], accept_multiple_files=True, key="context")
 
     st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
 
     st.markdown('<div class="section-title">Special Query <span style="font-size:1.2rem; font-weight:400;"></span></div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-desc">Do you have any specific questions in mind? <br>Examples: "Is this leader a good fit for the regional GM role?" • "How can we accelerate their readiness for executive committee?" • "What coaching areas should we prioritize?"</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-desc">Do you have any specific questions in mind? <br>Examples: "Is this patient showing signs of treatment resistance?" • "What therapeutic approaches might be most effective?" • "Are there any risk factors we should monitor closely?"</div>', unsafe_allow_html=True)
     user_question = st.text_area(" ", height=80, key="user_question")
 
     if st.button("Submit"):

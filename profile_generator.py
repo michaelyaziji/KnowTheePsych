@@ -16,7 +16,7 @@ client = OpenAI(api_key=api_key)
 
 class ProfileGenerator:
     def __init__(self):
-        self.system_prompt = """You are a world-class expert in psychology, psychological assessment, and personal development. You specialize in synthesizing diverse data sources—such as personality assessments, 360 feedback, coaching notes, performance reviews, and CVs—into insightful, psychologically sophisticated profiles. Your goal is to produce actionable insights, grounded in evidence, that support individual growth and organizational fit. Always cite the data source behind your claims and remain both rigorous and humanistic in tone."""
+        self.system_prompt = """You are a world-class expert in psychology, psychological assessment, and mental health. You specialize in synthesizing diverse data sources—such as psychological assessments, medical history, therapy notes, and diagnostic evaluations—into insightful, psychologically sophisticated profiles. Your goal is to produce actionable insights, grounded in evidence, that support treatment planning and patient care. Always cite the data source behind your claims and remain both rigorous and humanistic in tone."""
 
     def generate_profile(self, document_chunks: List[str], metadata: List[dict] = None) -> str:
         """Generate a psychology profile from document chunks and optional metadata, returning structured JSON output."""
@@ -138,32 +138,32 @@ class ProfileGenerator:
             f"Based on the following psychology documents, generate a comprehensive psychology profile:\n\n"
             f"Person Information:\n{metadata_text}\n\n"
             "IMPORTANT FORMATTING INSTRUCTIONS:\n"
-            "- For 'Key Strengths', 'Potential Derailers', 'Roles That Would Fit', and 'Roles That Would Not Fit' sections, ALWAYS format the content as a numbered list (1., 2., 3., etc.)\n"
+            "- For 'Key Strengths', 'Potential Challenges', 'Treatment Considerations', and 'Risk Factors' sections, ALWAYS format the content as a numbered list (1., 2., 3., etc.)\n"
             "- Insert a blank line between each numbered item (double line break)\n"
-            "- Each point should be focused on a single strength, derailer, or role fit\n"
+            "- Each point should be focused on a single strength, challenge, or consideration\n"
             "- Limit each enumerated list to a maximum of 5 items\n"
             "- For 'Profile Summary' and 'Psychological Style' sections, use paragraph format\n"
-            "- Each significant claim should include a parenthetical reference to the source (e.g., 'strong analytical abilities (Hogan Assessment)')\n"
+            "- Each significant claim should include a parenthetical reference to the source (e.g., 'exhibits anxious tendencies (Psychological Assessment)')\n"
             "- Do not use markdown formatting or special characters that might interfere with JSON\n\n"
             "Sections:\n"
             "1. Profile Summary\n"
             "2. Key Strengths\n"
-            "3. Potential Derailers\n"
+            "3. Potential Challenges\n"
             "4. Psychological Style\n"
-            "5. Roles That Would Fit\n"
-            "6. Roles That Would Not Fit\n\n"
+            "5. Treatment Considerations\n"
+            "6. Risk Factors\n\n"
             "Example output:\n"
             "[\n"
-            "  {\"section\": \"Profile Summary\", \"content\": \"Jane Doe is a strategic leader with exceptional analytical abilities (Hogan Assessment) and extensive experience in technology transformation (CV/Resume)...\", \"sources\": \"Hogan Assessment, CV/Resume\"},\n"
-            "  {\"section\": \"Key Strengths\", \"content\": \"1. Strong analytical thinking and problem-solving skills (Hogan Assessment)\\n\\n2. Excellent communication and stakeholder management (360° Feedback)\\n\\n3. Resilient under pressure (IDI Assessment)\", \"sources\": \"Hogan Assessment, 360° Feedback, IDI Assessment\"},\n"
-            "  {\"section\": \"Potential Derailers\", \"content\": \"1. Can become overly focused on details (Hogan Assessment)\\n\\n2. May struggle with delegating effectively (360° Feedback)\\n\\n3. Sometimes avoids necessary conflict (Hogan Assessment)\", \"sources\": \"Hogan Assessment, 360° Feedback\"},\n"
-            "  {\"section\": \"Psychological Style\", \"content\": \"Jane demonstrates a collaborative, outcomes-focused approach (360° Feedback) with a particular strength in complex stakeholder management (IDI Assessment)...\", \"sources\": \"360° Feedback, IDI Assessment\"},\n"
-            "  {\"section\": \"Roles That Would Fit\", \"content\": \"1. Strategic leadership roles requiring analytical depth (Hogan Assessment)\\n\\n2. Cross-functional team leadership (CV/Resume)\\n\\n3. Change management initiatives (IDI Assessment)\", \"sources\": \"Hogan Assessment, CV/Resume, IDI Assessment\"},\n"
-            "  {\"section\": \"Roles That Would Not Fit\", \"content\": \"1. Highly operational roles with repetitive tasks (Hogan Assessment)\\n\\n2. Positions requiring extensive detailed analysis (360° Feedback)\\n\\n3. Roles with limited stakeholder interaction (IDI Assessment)\", \"sources\": \"Hogan Assessment, 360° Feedback, IDI Assessment\"}\n"
+            "  {\"section\": \"Profile Summary\", \"content\": \"The patient exhibits signs of moderate anxiety with comorbid depressive features (Psychological Assessment) and has shown partial response to previous cognitive-behavioral interventions (Treatment History)...\", \"sources\": \"Psychological Assessment, Treatment History\"},\n"
+            "  {\"section\": \"Key Strengths\", \"content\": \"1. Strong introspective abilities and psychological mindedness (Psychological Assessment)\\n\\n2. Consistent engagement in therapeutic process (Treatment Notes)\\n\\n3. Supportive family environment (Clinical Interview)\", \"sources\": \"Psychological Assessment, Treatment Notes, Clinical Interview\"},\n"
+            "  {\"section\": \"Potential Challenges\", \"content\": \"1. Tendency toward rumination and catastrophic thinking (Psychological Assessment)\\n\\n2. Difficulty with emotional regulation during acute stress (Treatment Notes)\\n\\n3. Inconsistent application of coping strategies (Psychological Assessment)\", \"sources\": \"Psychological Assessment, Treatment Notes\"},\n"
+            "  {\"section\": \"Psychological Style\", \"content\": \"The patient demonstrates an anxious-avoidant attachment style (Psychological Assessment) with a tendency to withdraw during interpersonal conflicts (Clinical Interview)...\", \"sources\": \"Psychological Assessment, Clinical Interview\"},\n"
+            "  {\"section\": \"Treatment Considerations\", \"content\": \"1. Structured cognitive-behavioral approaches with emphasis on thought records (Psychological Assessment)\\n\\n2. Gradual exposure to anxiety-provoking situations (Treatment History)\\n\\n3. Mindfulness training to reduce rumination (Clinical Interview)\", \"sources\": \"Psychological Assessment, Treatment History, Clinical Interview\"},\n"
+            "  {\"section\": \"Risk Factors\", \"content\": \"1. History of passive suicidal ideation during major depressive episodes (Treatment History)\\n\\n2. Social isolation during periods of heightened anxiety (Psychological Assessment)\\n\\n3. Tendency to discontinue medication without consultation (Treatment Notes)\", \"sources\": \"Treatment History, Psychological Assessment, Treatment Notes\"}\n"
             "]\n\n"
             f"{context}\n\n"
             "Return only the JSON array, with no extra commentary or explanation.\n"
-            "Remember to format 'Key Strengths', 'Potential Derailers', 'Roles That Would Fit', and 'Roles That Would Not Fit' as numbered lists with proper line breaks between items."
+            "Remember to format 'Key Strengths', 'Potential Challenges', 'Treatment Considerations', and 'Risk Factors' as numbered lists with proper line breaks between items."
         )
 
         response = client.chat.completions.create(
@@ -229,46 +229,41 @@ class ProfileGenerator:
         # Identify the types of documents based on content - same as in generate_profile
         assessment_types = []
         
-        # Check for Hogan assessment content
-        hogan_terms = ["hogan", "hpi", "hds", "mvpi", "motives values preferences", "personality inventory", "development survey"]
-        has_hogan = any(term in context.lower() for term in hogan_terms)
-        if has_hogan:
-            assessment_types.append("Hogan Assessment")
+        # Check for psychological assessment content
+        assessment_terms = ["psychological assessment", "psych eval", "mental status", "diagnosis", "dsm", "icd", "symptoms"]
+        has_assessment = any(term in context.lower() for term in assessment_terms)
+        if has_assessment:
+            assessment_types.append("Psychological Assessment")
             
-        # Check for 360 content
-        has_360 = "360" in context or "360-degree" in context.lower()
-        if has_360:
-            assessment_types.append("360° Feedback")
+        # Check for treatment notes content
+        treatment_terms = ["treatment notes", "therapy notes", "session notes", "progress notes"]
+        has_treatment = any(term in context.lower() for term in treatment_terms)
+        if has_treatment:
+            assessment_types.append("Treatment Notes")
             
-        # Check for CV/Resume content
-        cv_terms = ["cv", "resume", "résumé", "curriculum vitae", "work history", "professional experience", "education:"]
-        has_cv = any(term in context.lower() for term in cv_terms)
-        if has_cv:
-            assessment_types.append("CV/Resume")
-            
-        # Check for Intercultural Development Inventory
-        intercultural_terms = ["intercultural development inventory", "intercultural sensitivity", "cultural competence"]
-        has_intercultural = any(term in context.lower() for term in intercultural_terms)
-        if has_intercultural:
-            assessment_types.append("Intercultural Development Assessment")
+        # Check for medical history content
+        medical_terms = ["medical history", "medication", "health history", "physical exam", "vitals"]
+        has_medical = any(term in context.lower() for term in medical_terms)
+        if has_medical:
+            assessment_types.append("Medical History")
         
-        # Check for Individual Directions Inventory
-        individual_directions_terms = ["individual directions inventory", "idi report", "directions inventory"]
-        has_directions = any(term in context.lower() for term in individual_directions_terms)
-        if has_directions:
-            assessment_types.append("Individual Directions Inventory")
-        
-        # Check for performance reviews
-        perf_terms = ["performance review", "annual review", "performance assessment", "performance rating"]
-        has_perf = any(term in context.lower() for term in perf_terms)
-        if has_perf:
-            assessment_types.append("Performance Review")
-        
-        # Check for interview notes
-        interview_terms = ["interview notes", "interview summary", "candidate interview"]
+        # Check for clinical interview
+        interview_terms = ["clinical interview", "intake", "initial assessment", "client report"]
         has_interview = any(term in context.lower() for term in interview_terms)
         if has_interview:
-            assessment_types.append("Interview Notes")
+            assessment_types.append("Clinical Interview")
+        
+        # Check for standardized tests
+        test_terms = ["mmpi", "wais", "wisc", "beck", "hamilton", "gaf", "phq", "gad"]
+        has_tests = any(term in context.lower() for term in test_terms)
+        if has_tests:
+            assessment_types.append("Standardized Tests")
+            
+        # Check for personality assessment content
+        hogan_terms = ["hogan", "hpi", "hds", "mvpi", "personality inventory"]
+        has_hogan = any(term in context.lower() for term in hogan_terms)
+        if has_hogan:
+            assessment_types.append("Personality Assessment")
             
         # Combine detected document types
         detected_doc_types = ", ".join(assessment_types) if assessment_types else "Submitted Documents"
@@ -278,14 +273,14 @@ class ProfileGenerator:
 EXTREMELY IMPORTANT GUIDANCE ON SOURCES AND CITATIONS:
 
 1. When citing sources, DO NOT refer to them by their file type (e.g., 'PDF', 'DOCX'). Instead, identify them by their content type:
-   - Refer to personality assessments as 'Hogan Assessment' or similar specific assessment name
-   - Refer to 360-degree feedback as '360° Feedback'
-   - Refer to resumes as 'CV/Resume'
-   - Refer to intercultural assessments as 'IDI Assessment'
-   - For other documents, identify them by their purpose (e.g., 'Performance Review', 'Interview Notes')
+   - Refer to psychological assessments as 'Psychological Assessment' 
+   - Refer to therapy documentation as 'Treatment Notes'
+   - Refer to medical information as 'Medical History'
+   - Refer to personality measures as 'Personality Assessment'
+   - For other documents, identify them by their purpose (e.g., 'Clinical Interview', 'Standardized Tests')
 
 2. For EVERY significant claim or insight in your analysis, include a brief in-text citation showing the source, like this: 
-   '... demonstrates strong analytical abilities (Hogan Assessment).' or '... has experience managing global teams (CV/Resume).'
+   '... exhibits anxiety symptoms (Psychological Assessment).' or '... has responded well to CBT techniques (Treatment Notes).'
 
 3. Do not make claims that cannot be directly supported by the provided documents. If you're unsure about a claim, clearly indicate this.
 
@@ -297,7 +292,7 @@ EXTREMELY IMPORTANT GUIDANCE ON SOURCES AND CITATIONS:
    {detected_doc_types}
 """
 
-        prompt = f"""Based on the following psychology documents, answer this special question:
+        prompt = f"""Based on the following patient documents, answer this special question from the mental health practitioner:
 
 {citation_guidance}
 
@@ -305,7 +300,7 @@ EXTREMELY IMPORTANT GUIDANCE ON SOURCES AND CITATIONS:
 
 Question: {question}
 
-Please provide a detailed, evidence-based answer, providing specific in-text citations for each claim (e.g., "demonstrates strong analytical abilities (Hogan Assessment)").
+Please provide a detailed, evidence-based answer, providing specific in-text citations for each claim (e.g., "exhibits anxiety symptoms (Psychological Assessment)").
 
 End your response with a "References" section that lists all the documents you cited.
 

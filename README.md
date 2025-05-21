@@ -1,12 +1,12 @@
-# KnowThee.AI - Psychology Assessment Tool
+# KnowThee.AI - Psychological Assessment Tool for Mental Health Practitioners
 
-An AI-powered psychology assessment and development tool that generates personalized psychology profiles from various document inputs.
+An AI-powered psychological assessment tool for mental health practitioners that generates personalized psychology profiles for patients from various document inputs.
 
 ## Features
-- Upload and process PDF and DOCX files (CVs, 360s, psychometric assessments)
-- AI-powered psychology profile generation
-- Privacy-first design
-- Export profiles to PDF
+- Upload and process PDF and DOCX files (psychological assessments, medical history, treatment notes)
+- AI-powered comprehensive psychological profile generation
+- HIPAA-compliant privacy-first design
+- Export profiles to PowerPoint for treatment planning
 
 ## Setup
 1. Install dependencies:
@@ -25,10 +25,11 @@ streamlit run app.py
 ```
 
 ## Privacy
-This application is designed with privacy in mind:
-- No long-term storage of PII without explicit permission
+This application is designed with strict privacy and HIPAA compliance in mind:
+- No long-term storage of PHI (Protected Health Information) without explicit permission
 - Data is processed locally where possible
 - Temporary storage only for the duration of the session
+- No external data sharing beyond what's needed for AI processing
 
 ## License
 Proprietary - All rights reserved 
